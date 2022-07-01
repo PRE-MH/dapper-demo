@@ -1,21 +1,30 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Dapper;
+using Microsoft.Data.Sqlite;
 
 using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();
 
-    var command = connection.CreateCommand();
-    command.CommandText =
-    @"
-        SELECT *
-        FROM dog
-    ";
-    using (var reader = command.ExecuteReader())
+    var sql = "SELECT * FROM Dog";
+    var result = connection.Query<Dog>(sql);
+
+    foreach(var dog in result)
     {
-        while (reader.Read())
-        {
-            var value = reader.GetString(0);
-            Console.WriteLine($"Hello, {value}!");
-        }
+        Console.WriteLine(dog);
+    }
+}
+
+
+class Dog
+{
+    public string Name {get; set;}
+
+    public int Age {get; set;}
+
+    public int Id {get; set;}
+
+    public override string ToString()
+    {
+        return $"DOG {Id}: {Name} {Age}";
     }
 }

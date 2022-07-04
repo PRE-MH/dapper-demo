@@ -1,11 +1,12 @@
 ﻿using Dapper;
 using Microsoft.Data.Sqlite;
-/**using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
+using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();
+    
 
-    connection.Execute("INSERT INTO Dog VALUES (20, 3, 'dog3', 16)");
-}**/
+    connection.Execute("INSERT INTO Dog VALUES (16, 4, 'dog4', 16.9)");
+}
 /**using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();

@@ -3,9 +3,11 @@ using Microsoft.Data.Sqlite;
 using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();
-    
+    int age=16;
+    string name="dog2";
+    double weight=15.3;
 
-    connection.Execute("INSERT INTO Dog VALUES (16, 4, 'dog4', 16.9)");
+    connection.Execute("INSERT INTO Dog (Age, Name, Weight) VALUES (@age ,@name ,@weight )", new { age, name, weight});
 }
 /**using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
@@ -13,12 +15,12 @@ using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 
     connection.Execute("DELETE FROM Dog WHERE Id=3");
 }**/
-using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
+/**using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();
 
     connection.Execute("UPDATE Dog SET Weight=100 WHERE Id=1");
-}
+}**/
 using (var connection = new SqliteConnection("Data Source=./data/demo.db"))
 {
     connection.Open();

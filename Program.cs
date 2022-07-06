@@ -28,65 +28,66 @@
 }*/
 using Dapper;
 using Microsoft.Data.Sqlite;
-/**using (var connection = new SqliteConnection("Data Source=./data/demo1.db"))
-{
-    var sql =
-    @"select * from Post p
-    left join User u on u.Id = p.OwnerId
-    Order by p.Id";
-    var data = connection.Query<Post, User, Post>(sql, (post, user) => { post.Owner = user; return post;});
-    foreach(var post in data){
-        Console.WriteLine(post);
-    }
-}**/
 new UserRepository().Select();
-Console.WriteLine("-----------------------");
-Console.WriteLine("Donner votre choix");
-Console.WriteLine("1: Ajouter");
-Console.WriteLine("2: Supprimer");
-Console.WriteLine("3: Mettre à jour");
-Console.WriteLine("4: Afficher les postes d'un utilisateur");
-int x=0;
+string answer="";
 do{
-x=Convert.ToInt32(Console.ReadLine());
-}
-while ( x<1 || x >4 );
-User user=new User();
-switch (x) {
-    case 1:
-        Console.WriteLine("Donner un nom");
-        string name=Console.ReadLine();
-        user.Name=name;        
-        new UserRepository().Add(user);  
-        Console.WriteLine("--------------------------");
-        Console.WriteLine("Votre nouvelle Base de données :");
-        new UserRepository().Select();
-    break;
-    case 2:
-        Console.WriteLine("Donner l'id");
-        int y =Convert.ToInt32(Console.ReadLine());
-        user.Id=y;
-        new UserRepository().Delete(y);  
-        Console.WriteLine("--------------------------");
-        Console.WriteLine("Votre nouvelle Base de données :");
-        new UserRepository().Select();
-    break;
-    case 3:
-        Console.WriteLine("Donner l'id");
-        int y1 =Convert.ToInt32(Console.ReadLine());
-        user.Id=y1;
-        new UserRepository().Update(y1);
-        Console.WriteLine("--------------------------");
-        Console.WriteLine("Votre nouvelle Base de données :");
-        new UserRepository().Select();
-    break;
-    case 4:
-        Console.WriteLine("Donner l'id");
-        int y2 =Convert.ToInt32(Console.ReadLine());
-        user.Id=y2;
-        new UserRepository().Postes(y2);
-    break;
-}
+    Console.WriteLine("-----------------------");
+    Console.WriteLine("Donner votre choix");
+    Console.WriteLine("1: Ajouter");
+    Console.WriteLine("2: Supprimer");
+    Console.WriteLine("3: Mettre à jour");
+    Console.WriteLine("4: Afficher les postes d'un utilisateur");
+    Console.WriteLine("5: Afficher tous les postes");
+    int x=0;
+    do{
+    x=Convert.ToInt32(Console.ReadLine());
+    }
+    while ( x<1 || x >5 );
+    User user=new User();
+    switch (x) {
+        case 1:
+            Console.WriteLine("Donner un nom");
+            string name=Console.ReadLine();
+            user.Name=name;        
+            new UserRepository().Add(user);  
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Votre nouvelle Base de données :");
+            new UserRepository().Select();
+        break;
+        case 2:
+            Console.WriteLine("Donner l'id");
+            int y =Convert.ToInt32(Console.ReadLine());
+            user.Id=y;
+            new UserRepository().Delete(y);  
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Votre nouvelle Base de données :");
+            new UserRepository().Select();
+        break;
+        case 3:
+            Console.WriteLine("Donner l'id");
+            int y1 =Convert.ToInt32(Console.ReadLine());
+            user.Id=y1;
+            new UserRepository().Update(y1);
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Votre nouvelle Base de données :");
+            new UserRepository().Select();
+        break;
+        case 4:
+            Console.WriteLine("Donner l'id");
+            int y2 =Convert.ToInt32(Console.ReadLine());
+            user.Id=y2;
+            new UserRepository().Postes(y2);
+        break;
+        case 5:
+            new UserRepository().tous_postes();
+        break;
+    }
+    do{
+        Console.WriteLine("Essayer autre chose ?");
+        answer=Console.ReadLine();
+    }while(answer.ToUpper()!="OUI" && answer.ToUpper()!="NON");
+}while(answer.ToUpper()=="OUI");
+Console.WriteLine("BYE BYE");
 
 public class Post
 {
@@ -214,6 +215,18 @@ public class UserRepository
             }
         }else{
             Console.WriteLine("Cet utilisateur n'existe pas");
+        }
+    }
+    public void tous_postes(){
+        var connection = new SqliteConnection("DataSource=./data/demo1.db");
+        var sql =
+        @"select * from Post p
+        left join User u on u.Id = p.OwnerId
+        Order by p.Id";
+        var data = connection.Query<Post, User, Post>(sql, (post, user) => { post.Owner = user; return post;});
+        foreach(var post in data)
+        {
+            Console.WriteLine(post);
         }
     }
 }

@@ -39,7 +39,7 @@ public class UserRepository
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
         if (GetById(user.Id) != null)
         {
-            Console.WriteLine("Utilisateur existe déja");
+            throw Exception;
         }
         else
         {
@@ -104,6 +104,19 @@ public class UserRepository
         foreach (var x in result)
         {
             Console.WriteLine(x);
+        }
+    }
+    public int VerifyUserById(int id)
+    {
+        var connection = new SqliteConnection("DataSource=./data/demo1.db");
+        var result=connection.Query<User>("SELECT * FROM User WHERE Id=@id", new {id});
+        if (result.Any())
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
         }
     }
     

@@ -1,7 +1,6 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 using DapperDemo.Models;
-using DapperDemo.DAL;
 namespace DapperDemo.DAL;
 
 public class PostRepository
@@ -77,7 +76,7 @@ public class PostRepository
         var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { id });
         connection.Execute("UPADATE Post SET Title=@title, Content=@content, OwnerId=@ownerid",new{title,content,ownerid});
     }
-    public int Verify(int id){
+    public int VerifyPostById(int id){
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
         var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { id });
         if(result.Any()){

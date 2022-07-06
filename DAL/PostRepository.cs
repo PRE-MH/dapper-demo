@@ -1,7 +1,6 @@
 using Dapper;
 using Microsoft.Data.Sqlite;
 using DapperDemo.Models;
-using DapperDemo.DAL;
 namespace DapperDemo.DAL;
 
 public class PostRepository

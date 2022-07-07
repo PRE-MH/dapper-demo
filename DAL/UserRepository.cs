@@ -36,48 +36,40 @@ public class UserRepository
 
     public void Add(User user)
     {
-        var connection = new SqliteConnection("DataSource=./data/demo1.db");
         if (GetById(user.Id) != null)
         {
-            Console.WriteLine("Utilisateur existe déja");
+            throw new Exception("Utilisateur existe deja");
         }
-        else
-        {
-            connection.Execute("INSERT INTO User (Name) VALUES (@Name)", new { user.Name });
-            Console.WriteLine("Ajout terminé avec succès");
-        }
+
+        var connection = new SqliteConnection("DataSource=./data/demo1.db");
+        connection.Execute("INSERT INTO User (Name) VALUES (@Name)", new { user.Name });
     }
 
     public void Delete(int id)
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        if (GetById(id) != null)
+
+        var result = connection.Query<User>("SELECT * FROM POST p , User u WHERE u.Id=p.OwnerId and p.OwnerId=@id", new { id });
+        if (result.Any())
         {
-            var result = connection.Query<User>("SELECT * FROM POST p , User u WHERE u.Id=p.OwnerId and p.OwnerId=@id", new { id });
-            if (result.Any())
+            Console.WriteLine("Cet utilisateur a déja " + result.Count() + " poste(s).");
+            Console.WriteLine("Voulez-vous le supprimer ?");
+            string answer = "";
+            do
             {
-                Console.WriteLine("Cet utilisateur a déja " + result.Count() + " poste(s).");
-                Console.WriteLine("Voulez-vous le supprimer ?");
-                string answer = "";
-                do
-                {
-                    answer = Console.ReadLine();
-                } while (answer.ToUpper() != "OUI" && answer.ToUpper() != "NON");
-                if (answer.ToUpper() == "YES")
-                {
-                    connection.Execute("DELETE FROM User WHERE Id=@id", new { id });
-                    Console.WriteLine("Suppression terminée avec succès");
-                }
-                else
-                {
-                    Console.WriteLine("Suppression annulée");
-                }
+                answer = Console.ReadLine();
+            } while (answer.ToUpper() != "OUI" && answer.ToUpper() != "NON");
+            if (answer.ToUpper() == "YES")
+            {
+                connection.Execute("DELETE FROM User WHERE Id=@id", new { id });
+                Console.WriteLine("Suppression terminée avec succès");
+            }
+            else
+            {
+                Console.WriteLine("Suppression annulée");
             }
         }
-        else
-        {
-            Console.WriteLine("Utilisateur n'existe pas déja");
-        }
+
     }
 
     public void Update(int id)
@@ -106,5 +98,5 @@ public class UserRepository
             Console.WriteLine(x);
         }
     }
-    
+
 }

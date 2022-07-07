@@ -21,10 +21,10 @@ public class PostRepository
         return result.ToList();
     }
 
-    public void Postes(int id)
+    public void Postes(int PostId)
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        var result = connection.Query<User>("SELECT * FROM User WHERE Id=@id", new { id });
+        var result = connection.Query<User>("SELECT * FROM User WHERE Id=@id", new { PostId });
         if (result.Any())
         {
             var result1 = connection.Query<Post>("SELECT * FROM User u,Post p WHERE u.Id=p.OwnerId and p.OwnerId=@id", new { id });
@@ -93,9 +93,9 @@ public class PostRepository
         var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { id });
         connection.Execute("UPADATE Post SET Title=@title, Content=@content, OwnerId=@ownerid", new { title, content, ownerid });
     }
-    public int Verify(int id){
+    public int VerifyPostById(int PostId){
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { id });
+        var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { PostId});
         if (result.Any())
         {
             return 1;

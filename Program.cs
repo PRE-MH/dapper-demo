@@ -2,7 +2,7 @@
 using DapperDemo.Models;
 
 var ur = new UserRepository();
-ur.Select();
+ur.SelectAllUsers();
 var pr = new PostRepository();
 int x=0;
 do
@@ -20,45 +20,88 @@ do
     Console.WriteLine("9: Quitter");
     do
     {
-
         x = Convert.ToInt32(Console.ReadLine());
     }
     while (x < 1 || x > 9);
-    User user = new User();
     switch (x)
     {
         case 1:
             Console.WriteLine("Donner un nom");
             string name = Console.ReadLine();
-            user.Name = name;
-            ur.Add(user);
+            ur.Add(name);
             Console.WriteLine("--------------------------");
-            Console.WriteLine("Votre nouvelle Base de données :");
-            ur.Select();
+            Console.WriteLine("Table User :");
+            ur.SelectAllUsers();
             break;
         case 2:
             Console.WriteLine("Donner l'id");
-            int y = Convert.ToInt32(Console.ReadLine());
-            ur.Delete(y);
-            Console.WriteLine("--------------------------");
-            Console.WriteLine("Votre nouvelle Base de données :");
-            ur.Select();
+            int userId = Convert.ToInt32(Console.ReadLine());
+            if (ur.VerifyUserById(userId) == 1) {
+                if (pr.GetPostsCountByUserId(userId) == 0){
+                    Console.WriteLine("Cet utilisateur n'a aucune publication");
+                }
+                else
+                {
+                    Console.WriteLine("Cet utilisateur a "+pr.GetPostsCountByUserId(userId)+" publications :");
+                    Console.WriteLine(pr.GetPostsByUserId(userId);
+                    Console.WriteLine("Voulez-vous vraiement le supprimer");
+                    string answer=Console.ReadLine();
+                    if(answer.ToUpper() =="OUI")
+                    {
+                        ur.Delete(userId);
+                        Console.WriteLine("Suppression terminée avec succès");
+                        Console.WriteLine("--------------------------");
+                        Console.WriteLine("Table User :");
+                        ur.SelectAllUsers();
+                        Console.WriteLine("--------------------------");
+                        Console.WriteLine("Table Post :");
+                        pr.SelectAllPosts();
+                    }else if(answer.ToUpper() == "NON")
+                    {
+                        Console.WriteLine("Suppression annulée");
+                    }
+                }    
+            }
+            else
+            {
+                throw new Exception("Utilisateur inexistant");
+            }
             break;
         case 3:
             Console.WriteLine("Donner l'id");
-            int y1 = Convert.ToInt32(Console.ReadLine());
-            ur.Update(y1);
-            Console.WriteLine("--------------------------");
-            Console.WriteLine("Votre nouvelle Base de données :");
-            ur.Select();
+            int userId1 = Convert.ToInt32(Console.ReadLine());
+            if(ur.VerifyUserById(userId1) == 1) {
+                Console.WriteLine("Donner le nouveau nom :");
+                string name1=Console.ReadLine();
+                ur.Update(userId1,name1);
+                Console.WriteLine("--------------------------");
+                Console.WriteLine("Table User :");
+                ur.SelectAllUsers();
+            }
+            else
+            {
+                throw new Exception("Utilisateur inexistant");
+            }
             break;
         case 4:
             Console.WriteLine("Donner l'id");
-            int y2 = Convert.ToInt32(Console.ReadLine());
-            pr.Postes(y2);
+            int userId2 = Convert.ToInt32(Console.ReadLine());
+            if(ur.VerifyUserById(userId2) == 1) {
+                if(pr.GetPostsCountByUserId(userId2)==0) {
+                    Console.WriteLine("Cet utilisateur n'a aucune publication");
+                }
+                else
+                {
+                    Console.WriteLine(pr.GetPostsByUserId(userId2);
+                }
+            }
+            else
+            {
+                throw new Exception("Utilisateur inexistant");
+            }
             break;
         case 5:
-            pr.tous_postes();
+            pr.SelectAllPosts();
             break;
         case 6:
             Console.WriteLine("Donner le titre de la poste :");
@@ -68,25 +111,41 @@ do
             Console.WriteLine("Donner l'id de l'utilisateur :");
             int ownerid =Convert.ToInt32(Console.ReadLine());
             pr.Add(title,content,ownerid);
+            Console.WriteLine("--------------------------");
+            Console.WriteLine("Table Post :");
+            pr.SelectAllPosts();
             break;
         case 7:
             Console.WriteLine("Donner l'id de la poste :");
-            int id =Convert.ToInt32(Console.ReadLine());
-            pr.Delete(id);
+            int PostId =Convert.ToInt32(Console.ReadLine());
+            if(pr.VerifyPostById(PostId)==1){
+                pr.Delete(PostId);
+                Console.WriteLine("Suppression terminée avec succès");
+                Console.WriteLine("--------------------------");
+                Console.WriteLine("Table Post :");
+                pr.SelectAllPosts();
+            }
+            else
+            {
+                throw new Exception("Publication inexistante");
+            }
             break;
         case 8:
             Console.WriteLine("Donner l'id de la poste :");
-            int id1 =Convert.ToInt32(Console.ReadLine());
-            if(pr.Verify(id1)==1){
-            Console.WriteLine("Donner le titre de la poste :");
-            string title1=Console.ReadLine();
-            Console.WriteLine("Donner le contenu de la poste :");
-            string content1=Console.ReadLine();
-            Console.WriteLine("Donner l'id de l'utilisateur :");
-            int ownerid1 =Convert.ToInt32(Console.ReadLine());
-            pr.Update(id1,title1,content1,ownerid1);
+            int PostId1 =Convert.ToInt32(Console.ReadLine());
+            if(pr.VerifyPostById(PostId1)==1){
+                Console.WriteLine("Donner le titre de la poste :");
+                string title1=Console.ReadLine();
+                Console.WriteLine("Donner le contenu de la poste :");
+                string content1=Console.ReadLine();
+                Console.WriteLine("Donner l'id de l'utilisateur :");
+                int ownerid1 =Convert.ToInt32(Console.ReadLine());
+                pr.Update(PostId1,title1,content1,ownerid1);
+                Console.WriteLine("--------------------------");
+                Console.WriteLine("Table Post :");
+                pr.SelectAllPosts();
             }else{
-                Console.WriteLine("Cette poste n'existe pas");
+                throw new Exception("Publication inexistante");
             }
             break;
         case 9:

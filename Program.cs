@@ -114,7 +114,9 @@ do
             }
             break;
         case 5:
-            pr.SelectAllPosts();
+            foreach(var result1 in pr.SelectAllPosts()){
+                        Console.WriteLine(result1);
+                    }
             break;
         case 6:
             Console.WriteLine("Donner le titre de la poste :");

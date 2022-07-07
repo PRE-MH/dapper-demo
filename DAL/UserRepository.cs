@@ -51,15 +51,11 @@ public class UserRepository
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
         connection.Execute("UPDATE User SET Name=@name WHERE Id=@id", new { id, name });
     }
-    public void SelectAllUsers()
+    public IList<User> SelectAllUsers()
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
         var result = connection.Query<User>("SELECT * FROM User ");
-        Console.WriteLine("Table User :");
-        foreach (var x in result)
-        {
-            Console.WriteLine(x);
-        }
+        return result.ToList();
     }
 
     public int VerifyUserById(int id)

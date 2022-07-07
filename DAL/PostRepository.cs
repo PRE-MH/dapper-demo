@@ -9,14 +9,14 @@ public class PostRepository
     public int GetPostsCountByUserId(int userId)
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        var result = connection.Query<Post>("SELECT * FROM User u,Post p WHERE u.Id=p.OwnerId and p.OwnerId=@id", new { userId });
+        var result = connection.Query<Post>("SELECT * FROM User u,Post p WHERE u.Id=p.OwnerId and p.OwnerId=@userId", new { userId });
         return result.Count();
     }
 
     public IList<Post> GetPostsByUserId(int userId)
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        var result = connection.Query<Post>("SELECT * FROM User u,Post p WHERE u.Id=p.OwnerId and p.OwnerId=@id", new { userId });
+        var result = connection.Query<Post>("SELECT * FROM User u,Post p WHERE u.Id=p.OwnerId and p.OwnerId=@userId",new{userId});
         return result.ToList();
     }
     public IList<Post> SelectAllPosts()

@@ -1,8 +1,9 @@
 ﻿using DapperDemo.DAL;
-using DapperDemo.Models;
 
 var ur = new UserRepository();
-ur.SelectAllUsers();
+foreach(var o in ur.SelectAllUsers()){
+    Console.WriteLine(o);
+}
 var pr = new PostRepository();
 int x=0;
 do
@@ -13,7 +14,7 @@ do
     Console.WriteLine("2: Supprimer User");
     Console.WriteLine("3: Mettre à jour User");
     Console.WriteLine("4: Afficher les postes d'un utilisateur");
-    Console.WriteLine("5: Afficher toutes les postes");
+    Console.WriteLine("5: Afficher toutes les publications");
     Console.WriteLine("6: Ajouter Post");
     Console.WriteLine("7: Supprimer Post");
     Console.WriteLine("8: Mise à jour Post");
@@ -31,7 +32,9 @@ do
             ur.Add(name);
             Console.WriteLine("--------------------------");
             Console.WriteLine("Table User :");
-            ur.SelectAllUsers();
+            foreach(var o in ur.SelectAllUsers()){
+                ur.SelectAllUsers();
+            }
             break;
         case 2:
             Console.WriteLine("Donner l'id");
@@ -43,8 +46,10 @@ do
                 else
                 {
                     Console.WriteLine("Cet utilisateur a "+pr.GetPostsCountByUserId(userId)+" publications :");
-                    Console.WriteLine(pr.GetPostsByUserId(userId);
-                    Console.WriteLine("Voulez-vous vraiement le supprimer");
+                    foreach(var o7 in pr.GetPostsByUserId(userId)){
+                        Console.WriteLine(o7);
+                    };
+                    Console.WriteLine("Voulez-vous vraiement le supprimer ?");
                     string answer=Console.ReadLine();
                     if(answer.ToUpper() =="OUI")
                     {
@@ -52,10 +57,14 @@ do
                         Console.WriteLine("Suppression terminée avec succès");
                         Console.WriteLine("--------------------------");
                         Console.WriteLine("Table User :");
-                        ur.SelectAllUsers();
+                        foreach(var o1 in ur.SelectAllUsers()){
+                            Console.WriteLine(o1);                        
+                        }
                         Console.WriteLine("--------------------------");
                         Console.WriteLine("Table Post :");
-                        pr.SelectAllPosts();
+                        foreach(var o2 in pr.SelectAllPosts()){
+                            Console.WriteLine(o2);
+                        }
                     }else if(answer.ToUpper() == "NON")
                     {
                         Console.WriteLine("Suppression annulée");
@@ -76,7 +85,9 @@ do
                 ur.Update(userId1,name1);
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("Table User :");
-                ur.SelectAllUsers();
+                foreach(var o3 in ur.SelectAllUsers()){
+                    Console.WriteLine(o3);                        
+                }
             }
             else
             {
@@ -92,7 +103,9 @@ do
                 }
                 else
                 {
-                    Console.WriteLine(pr.GetPostsByUserId(userId2);
+                    foreach(var result in pr.GetPostsByUserId(userId2)){
+                        Console.WriteLine(result);
+                    }
                 }
             }
             else
@@ -113,7 +126,10 @@ do
             pr.Add(title,content,ownerid);
             Console.WriteLine("--------------------------");
             Console.WriteLine("Table Post :");
-            pr.SelectAllPosts();
+            foreach (var o4 in pr.SelectAllPosts())
+            {
+                Console.WriteLine(o4);
+            }
             break;
         case 7:
             Console.WriteLine("Donner l'id de la poste :");
@@ -123,7 +139,9 @@ do
                 Console.WriteLine("Suppression terminée avec succès");
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("Table Post :");
-                pr.SelectAllPosts();
+                foreach(var o5 in pr.SelectAllPosts()){
+                    Console.WriteLine(o5);
+                }
             }
             else
             {
@@ -143,7 +161,10 @@ do
                 pr.Update(PostId1,title1,content1,ownerid1);
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("Table Post :");
-                pr.SelectAllPosts();
+                foreach (var o6 in pr.SelectAllPosts())
+                {
+                    Console.WriteLine(o6);
+                }
             }else{
                 throw new Exception("Publication inexistante");
             }

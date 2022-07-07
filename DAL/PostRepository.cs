@@ -71,10 +71,10 @@ public class PostRepository
             Console.WriteLine("Utilisateur n'existe pas");
         }
     }
-    public void Delete(int id)
+    public void Delete(int PostId)
     {
         var connection = new SqliteConnection("DataSource=./data/demo1.db");
-        var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { id });
+        var result = connection.Query<Post>("SELECT * FROM Post WHERE Id=@id", new { PostId });
         if (result.Any())
         {
             connection.Execute("DELETE FROM Post WHERE Id=@id", new { id });
